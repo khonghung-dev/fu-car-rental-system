@@ -6,6 +6,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import vn.edu.fpt.auth.entity.Account;
@@ -15,6 +16,7 @@ import vn.edu.fpt.admin.customermanagement.dto.CustomerView;
 import vn.edu.fpt.admin.customermanagement.entity.Customer;
 import vn.edu.fpt.admin.customermanagement.repository.CustomerRepository;
 import vn.edu.fpt.admin.customermanagement.service.CustomerService;
+import vn.edu.fpt.customer.profilemanagement.dto.CustomerProfileForm;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +60,31 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public boolean createCurrentCustomer(CustomerProfileForm form) {
+        Account account = authService.getCurrentCustomerAccount();
+        if (!customerRepository.findByAccountAccountId(account.getAccountId()).isEmpty()) {
+            return false;
+        }
+        Customer customer = new Customer();
+        customer.setAccount(account);
+        applyProfileForm(customer, form);
+        customerRepository.saveAndFlush(customer);
+        return true;
+    }
+
+    @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void updateCurrentCustomer(CustomerProfileForm form) {
+        Customer customer = findCurrentCustomer()
+                .orElseThrow(() -> new IllegalStateException("Tài khoản chưa có hồ sơ khách hàng."));
+        applyProfileForm(customer, form);
+        customerRepository.saveAndFlush(customer);
+    }
+
+    @Override
     @Transactional
     public void createCustomer(CustomerForm form) {
         Customer customer = new Customer();
@@ -96,6 +123,15 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setLicenceNumber(form.getLicenceNumber());
         customer.setLicenceDate(form.getLicenceDate());
         customer.setAccount(account);
+    }
+
+    private void applyProfileForm(Customer customer, CustomerProfileForm form) {
+        customer.setFullName(form.getFullName());
+        customer.setMobile(form.getMobile());
+        customer.setBirthday(form.getBirthday());
+        customer.setIdentityCard(form.getIdentityCard());
+        customer.setLicenceNumber(form.getLicenceNumber());
+        customer.setLicenceDate(form.getLicenceDate());
     }
 
     private CustomerView toView(Customer customer) {
