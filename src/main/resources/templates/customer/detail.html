@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết khách hàng - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Chi tiết khách hàng</h1>
+    <dl>
+        <dt>Mã khách hàng</dt>
+        <dd th:text="${customer.customerId}"></dd>
+        <dt>Họ tên</dt>
+        <dd th:text="${customer.fullName}"></dd>
+        <dt>Số điện thoại</dt>
+        <dd th:text="${customer.mobile}"></dd>
+        <dt>Ngày sinh</dt>
+        <dd th:text="${customer.birthday}"></dd>
+        <dt>Số giấy tờ tùy thân</dt>
+        <dd th:text="${customer.identityCard}"></dd>
+        <dt>Số giấy phép lái xe</dt>
+        <dd th:text="${customer.licenceNumber}"></dd>
+        <dt>Ngày cấp giấy phép</dt>
+        <dd th:text="${customer.licenceDate}"></dd>
+        <dt>Mã tài khoản</dt>
+        <dd th:text="${customer.accountId}"></dd>
+        <dt>Tên tài khoản</dt>
+        <dd th:text="${customer.accountName}"></dd>
+    </dl>
+    <p><a th:href="@{/admin/customers}">Danh sách khách hàng</a></p>
+    <p><a th:href="@{/admin/customers/{id}/edit(id=${customer.customerId})}">Chỉnh sửa</a></p>
+    <form th:action="@{/admin/customers/{id}/delete(id=${customer.customerId})}" method="post">
+        <button type="submit">Xóa khách hàng</button>
+    </form>
+</main>
+</body>
+</html>
