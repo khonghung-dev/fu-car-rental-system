@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hồ sơ của tôi - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Hồ sơ của tôi</h1>
+    <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+    <dl th:if="${profile != null}">
+        <dt>Họ tên</dt>
+        <dd th:text="${profile.fullName}"></dd>
+        <dt>Số điện thoại</dt>
+        <dd th:text="${profile.mobile}"></dd>
+        <dt>Ngày sinh</dt>
+        <dd th:text="${profile.birthday}"></dd>
+        <dt>Số giấy tờ tùy thân</dt>
+        <dd th:text="${profile.identityCard}"></dd>
+        <dt>Số giấy phép lái xe</dt>
+        <dd th:text="${profile.licenceNumber}"></dd>
+        <dt>Ngày cấp giấy phép</dt>
+        <dd th:text="${profile.licenceDate}"></dd>
+    </dl>
+    <p th:if="${profile != null}"><a th:href="@{/customer/profile/edit}">Chỉnh sửa hồ sơ</a></p>
+    <section th:if="${profileMissing}">
+        <p>Tài khoản chưa có hồ sơ khách hàng. Vui lòng tạo hồ sơ ban đầu.</p>
+        <p><a th:href="@{/customer/profile/create}">Tạo hồ sơ</a></p>
+    </section>
+    <p><a th:href="@{/customer/home}">Trang Customer</a></p>
+</main>
+</body>
+</html>
