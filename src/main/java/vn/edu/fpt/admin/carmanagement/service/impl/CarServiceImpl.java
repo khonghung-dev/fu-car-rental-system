@@ -2,6 +2,7 @@ package vn.edu.fpt.admin.carmanagement.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,12 @@ public class CarServiceImpl implements CarService {
     @Transactional(readOnly = true)
     public CarView getCar(Integer carId) {
         return toView(findCar(carId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Car> findCarById(Integer carId) {
+        return carRepository.findById(carId);
     }
 
     @Override

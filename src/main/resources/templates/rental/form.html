@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${carRenId == null ? 'Tạo giao dịch thuê xe - FU Car Renting' : 'Chỉnh sửa giao dịch thuê xe - FU Car Renting'}"></title>
+</head>
+<body>
+<main>
+    <h1 th:text="${carRenId == null ? 'Tạo giao dịch thuê xe' : 'Chỉnh sửa giao dịch thuê xe'}"></h1>
+    <p th:if="${carRenId != null}">Mã giao dịch: <span th:text="${carRenId}"></span></p>
+    <p th:if="${#lists.isEmpty(customers)}" role="alert">Chưa có khách hàng để chọn.</p>
+    <p th:if="${#lists.isEmpty(cars)}" role="alert">Chưa có xe để chọn.</p>
+    <form th:action="${carRenId == null} ? @{/admin/rentals} : @{/admin/rentals/{id}/edit(id=${carRenId})}"
+          th:object="${carRentalForm}" method="post">
+        <p th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}" role="alert"></p>
+        <p>
+            <label for="customerId">Khách hàng</label>
+            <select id="customerId" th:field="*{customerId}" required>
+                <option value="">Chọn khách hàng</option>
+                <option th:each="customer : ${customers}" th:value="${customer.customerId}"
+                        th:text="${customer.customerId + ' - ' + customer.fullName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('customerId')}" th:errors="*{customerId}" role="alert"></span>
+        </p>
+        <p>
+            <label for="carId">Xe</label>
+            <select id="carId" th:field="*{carId}" required>
+                <option value="">Chọn xe</option>
+                <option th:each="car : ${cars}" th:value="${car.carId}"
+                        th:text="${car.carId + ' - ' + car.carName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('carId')}" th:errors="*{carId}" role="alert"></span>
+        </p>
+        <p>
+            <label for="pickupDate">Ngày nhận xe</label>
+            <input type="date" id="pickupDate" th:field="*{pickupDate}" required>
+            <span th:if="${#fields.hasErrors('pickupDate')}" th:errors="*{pickupDate}" role="alert"></span>
+            <span th:if="${#fields.hasErrors('pickupDateInSqlRange')}" th:errors="*{pickupDateInSqlRange}" role="alert"></span>
+        </p>
+        <p>
+            <label for="returnDate">Ngày trả xe</label>
+            <input type="date" id="returnDate" th:field="*{returnDate}" required>
+            <span th:if="${#fields.hasErrors('returnDate')}" th:errors="*{returnDate}" role="alert"></span>
+            <span th:if="${#fields.hasErrors('returnDateInSqlRange')}" th:errors="*{returnDateInSqlRange}" role="alert"></span>
+            <span th:if="${#fields.hasErrors('returnDateAfterPickupDate')}" th:errors="*{returnDateAfterPickupDate}" role="alert"></span>
+        </p>
+        <p>
+            <label for="rentPrice">Giá thuê</label>
+            <input type="number" id="rentPrice" th:field="*{rentPrice}" required step="1">
+            <span th:if="${#fields.hasErrors('rentPrice')}" th:errors="*{rentPrice}" role="alert"></span>
+        </p>
+        <p>
+            <label for="status">Trạng thái</label>
+            <input type="text" id="status" th:field="*{status}" required maxlength="10">
+            <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" role="alert"></span>
+        </p>
+        <button type="submit">Lưu giao dịch thuê xe</button>
+    </form>
+    <p><a th:href="@{/admin/rentals}">Danh sách giao dịch thuê xe</a></p>
+</main>
+</body>
+</html>
