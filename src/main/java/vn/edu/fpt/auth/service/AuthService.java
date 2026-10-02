@@ -7,4 +7,6 @@ import vn.edu.fpt.auth.entity.Account;
 public interface AuthService extends UserDetailsService {
 
     Optional<Account> findAccountById(Integer accountId);
+
+    Account getCurrentCustomerAccount();
 }

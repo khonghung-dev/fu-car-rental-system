@@ -15,6 +15,8 @@ public interface CustomerService {
 
     Optional<Customer> findCustomerById(Integer customerId);
 
+    Optional<Customer> findCurrentCustomer();
+
     void createCustomer(@Valid CustomerForm form);
 
     void updateCustomer(Integer customerId, @Valid CustomerForm form);

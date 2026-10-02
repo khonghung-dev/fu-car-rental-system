@@ -16,6 +16,10 @@ public interface CarService {
 
     Optional<Car> findCarById(Integer carId);
 
+    List<CarView> getAvailableCars();
+
+    List<Car> findAvailableCarsByIds(List<Integer> carIds);
+
     List<CarProducer> getProducers();
 
     void createCar(@Valid CarForm form);

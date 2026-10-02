@@ -9,6 +9,7 @@
 <main>
     <h1>Trang Customer</h1>
     <p>Xin chào, <span th:text="${accountName}"></span>.</p>
+    <p><a th:href="@{/customer/rent}">Thuê xe trực tuyến</a></p>
     <form th:action="@{/logout}" method="post">
         <button type="submit">Đăng xuất</button>
     </form>
