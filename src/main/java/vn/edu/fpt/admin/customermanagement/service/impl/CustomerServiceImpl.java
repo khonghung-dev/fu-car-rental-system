@@ -2,6 +2,7 @@ package vn.edu.fpt.admin.customermanagement.service.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     public CustomerView getCustomer(Integer customerId) {
         return toView(findCustomer(customerId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Customer> findCustomerById(Integer customerId) {
+        return customerRepository.findById(customerId);
     }
 
     @Override

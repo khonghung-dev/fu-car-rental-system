@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết giao dịch thuê xe - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Chi tiết giao dịch thuê xe</h1>
+    <dl>
+        <dt>Mã giao dịch</dt>
+        <dd th:text="${rental.carRenId}"></dd>
+        <dt>Mã khách hàng</dt>
+        <dd th:text="${rental.customerId}"></dd>
+        <dt>Khách hàng</dt>
+        <dd th:text="${rental.customerName}"></dd>
+        <dt>Mã xe</dt>
+        <dd th:text="${rental.carId}"></dd>
+        <dt>Xe</dt>
+        <dd th:text="${rental.carName}"></dd>
+        <dt>Ngày nhận xe</dt>
+        <dd th:text="${rental.pickupDate}"></dd>
+        <dt>Ngày trả xe</dt>
+        <dd th:text="${rental.returnDate}"></dd>
+        <dt>Giá thuê</dt>
+        <dd th:text="${rental.rentPrice}"></dd>
+        <dt>Trạng thái</dt>
+        <dd th:text="${rental.status}"></dd>
+    </dl>
+    <p><a th:href="@{/admin/rentals}">Danh sách giao dịch thuê xe</a></p>
+    <p><a th:href="@{/admin/rentals/{id}/edit(id=${rental.carRenId})}">Chỉnh sửa</a></p>
+    <form th:action="@{/admin/rentals/{id}/delete(id=${rental.carRenId})}" method="post">
+        <button type="submit">Xóa giao dịch thuê xe</button>
+    </form>
+</main>
+</body>
+</html>

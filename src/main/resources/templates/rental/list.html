@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý giao dịch thuê xe - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Quản lý giao dịch thuê xe</h1>
+    <p><a th:href="@{/admin/home}">Trang Admin</a></p>
+    <p><a th:href="@{/admin/rentals/create}">Tạo giao dịch thuê xe</a></p>
+    <p th:if="${successMessage != null}" th:text="${successMessage}" role="status"></p>
+    <p th:if="${errorMessage != null}" th:text="${errorMessage}" role="alert"></p>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Mã giao dịch</th>
+            <th scope="col">Khách hàng</th>
+            <th scope="col">Xe</th>
+            <th scope="col">Ngày nhận xe</th>
+            <th scope="col">Ngày trả xe</th>
+            <th scope="col">Giá thuê</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(rentals)}">
+            <td colspan="8">Chưa có giao dịch thuê xe.</td>
+        </tr>
+        <tr th:each="rental : ${rentals}">
+            <td th:text="${rental.carRenId}"></td>
+            <td th:text="${rental.customerName}"></td>
+            <td th:text="${rental.carName}"></td>
+            <td th:text="${rental.pickupDate}"></td>
+            <td th:text="${rental.returnDate}"></td>
+            <td th:text="${rental.rentPrice}"></td>
+            <td th:text="${rental.status}"></td>
+            <td>
+                <a th:href="@{/admin/rentals/{id}(id=${rental.carRenId})}">Chi tiết</a>
+                <a th:href="@{/admin/rentals/{id}/edit(id=${rental.carRenId})}">Chỉnh sửa</a>
+                <form th:action="@{/admin/rentals/{id}/delete(id=${rental.carRenId})}" method="post">
+                    <button type="submit">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
