@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết xe - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Chi tiết xe</h1>
+    <dl>
+        <dt>Mã xe</dt>
+        <dd th:text="${car.carId}"></dd>
+        <dt>Tên xe</dt>
+        <dd th:text="${car.carName}"></dd>
+        <dt>Năm sản xuất</dt>
+        <dd th:text="${car.carModelYear}"></dd>
+        <dt>Màu xe</dt>
+        <dd th:text="${car.color}"></dd>
+        <dt>Sức chứa</dt>
+        <dd th:text="${car.capacity}"></dd>
+        <dt>Mô tả</dt>
+        <dd th:text="${car.description}"></dd>
+        <dt>Ngày nhập</dt>
+        <dd th:text="${car.importDate}"></dd>
+        <dt>Mã nhà sản xuất</dt>
+        <dd th:text="${car.producerId}"></dd>
+        <dt>Nhà sản xuất</dt>
+        <dd th:text="${car.producerName}"></dd>
+        <dt>Giá thuê</dt>
+        <dd th:text="${car.rentPrice}"></dd>
+        <dt>Trạng thái</dt>
+        <dd th:text="${car.status}"></dd>
+    </dl>
+    <p><a th:href="@{/admin/cars}">Danh sách xe</a></p>
+    <p><a th:href="@{/admin/cars/{id}/edit(id=${car.carId})}">Chỉnh sửa</a></p>
+</main>
+</body>
+</html>
