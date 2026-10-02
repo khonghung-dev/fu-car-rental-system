@@ -3,6 +3,7 @@ package vn.edu.fpt.admin.carrentalmanagement.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,6 +38,16 @@ public class CarRentalServiceImpl implements CarRentalService {
         return carRentalRepository.findAll().stream()
                 .map(this::toView)
                 .toList();
+    }
+
+    @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @Transactional(readOnly = true)
+    public Optional<List<CarRentalView>> getCurrentCustomerRentals() {
+        return customerService.findCurrentCustomer()
+                .map(customer -> carRentalRepository.findByCustomerCustomerId(customer.getCustomerId()).stream()
+                        .map(this::toView)
+                        .toList());
     }
 
     @Override

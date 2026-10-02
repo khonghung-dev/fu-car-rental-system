@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lịch sử thuê xe - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Lịch sử thuê xe</h1>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+    <section th:if="${profileMissing}">
+        <p>Tài khoản chưa có hồ sơ khách hàng. Vui lòng tạo hồ sơ trước khi xem lịch sử thuê xe.</p>
+        <p><a th:href="@{/customer/profile}">Hồ sơ của tôi</a></p>
+    </section>
+    <table th:if="${errorMessage == null and !profileMissing}">
+        <thead>
+        <tr>
+            <th scope="col">Mã giao dịch</th>
+            <th scope="col">Xe</th>
+            <th scope="col">Ngày nhận xe</th>
+            <th scope="col">Ngày trả xe</th>
+            <th scope="col">Giá thuê</th>
+            <th scope="col">Trạng thái</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(rentals)}">
+            <td colspan="6">Chưa có lịch sử thuê xe.</td>
+        </tr>
+        <tr th:each="rental : ${rentals}">
+            <td th:text="${rental.carRenId}"></td>
+            <td th:text="${rental.carName}"></td>
+            <td th:text="${rental.pickupDate}"></td>
+            <td th:text="${rental.returnDate}"></td>
+            <td th:text="${rental.rentPrice}"></td>
+            <td th:text="${rental.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p><a th:href="@{/customer/home}">Trang Customer</a></p>
+</main>
+</body>
+</html>

@@ -7,5 +7,7 @@ import vn.edu.fpt.admin.carrentalmanagement.entity.CarRental;
 
 public interface CarRentalRepository extends JpaRepository<CarRental, Integer> {
 
+    List<CarRental> findByCustomerCustomerId(Integer customerId);
+
     List<CarRental> findByPickupDateBetweenOrderByPickupDateDesc(LocalDate startDate, LocalDate endDate);
 }
