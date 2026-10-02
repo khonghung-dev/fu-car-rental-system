@@ -1,5 +1,6 @@
 package vn.edu.fpt.admin.carrentalmanagement.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,14 @@ public class CarRentalServiceImpl implements CarRentalService {
     @Transactional(readOnly = true)
     public List<CarRentalView> getRentals() {
         return carRentalRepository.findAll().stream()
+                .map(this::toView)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CarRentalView> getRentalsForReport(LocalDate startDate, LocalDate endDate) {
+        return carRentalRepository.findByPickupDateBetweenOrderByPickupDateDesc(startDate, endDate).stream()
                 .map(this::toView)
                 .toList();
     }

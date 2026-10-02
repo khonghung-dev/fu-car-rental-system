@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Báo cáo giao dịch thuê xe - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Báo cáo giao dịch thuê xe</h1>
+    <p><a th:href="@{/admin/home}">Trang Admin</a></p>
+    <p>Lọc theo ngày nhận xe trong khoảng đã chọn và sắp xếp ngày nhận xe giảm dần.</p>
+    <form th:action="@{/admin/rental-report}" th:object="${rentalReportForm}" method="get">
+        <div th:if="${#fields.hasAnyErrors()}" role="alert">
+            <ul>
+                <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
+            </ul>
+        </div>
+        <p>
+            <label for="startDate">Ngày bắt đầu</label>
+            <input type="date" id="startDate" th:field="*{startDate}" required>
+        </p>
+        <p>
+            <label for="endDate">Ngày kết thúc</label>
+            <input type="date" id="endDate" th:field="*{endDate}" required>
+        </p>
+        <button type="submit">Xem báo cáo</button>
+    </form>
+    <p th:if="${errorMessage != null}" th:text="${errorMessage}" role="alert"></p>
+    <section th:if="${reportGenerated}">
+        <h2>Giao dịch thuê xe trong khoảng đã chọn</h2>
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Mã giao dịch</th>
+                <th scope="col">Khách hàng</th>
+                <th scope="col">Xe</th>
+                <th scope="col">Ngày nhận xe</th>
+                <th scope="col">Ngày trả xe</th>
+                <th scope="col">Giá thuê</th>
+                <th scope="col">Trạng thái</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(rentals)}">
+                <td colspan="7">Không có giao dịch thuê xe trong khoảng thời gian đã chọn.</td>
+            </tr>
+            <tr th:each="rental : ${rentals}">
+                <td th:text="${rental.carRenId}"></td>
+                <td th:text="${rental.customerName}"></td>
+                <td th:text="${rental.carName}"></td>
+                <td th:text="${rental.pickupDate}"></td>
+                <td th:text="${rental.returnDate}"></td>
+                <td th:text="${rental.rentPrice}"></td>
+                <td th:text="${rental.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
