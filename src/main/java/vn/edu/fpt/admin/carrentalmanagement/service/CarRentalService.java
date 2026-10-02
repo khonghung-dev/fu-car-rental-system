@@ -6,6 +6,7 @@ import java.util.List;
 import vn.edu.fpt.admin.carmanagement.dto.CarView;
 import vn.edu.fpt.admin.carrentalmanagement.dto.CarRentalForm;
 import vn.edu.fpt.admin.carrentalmanagement.dto.CarRentalView;
+import vn.edu.fpt.admin.carrentalmanagement.entity.CarRental;
 import vn.edu.fpt.admin.customermanagement.dto.CustomerView;
 
 public interface CarRentalService {
@@ -21,6 +22,8 @@ public interface CarRentalService {
     List<CarView> getCars();
 
     void createRental(@Valid CarRentalForm form);
+
+    void createOnlineRentals(List<CarRental> rentals);
 
     void updateRental(Integer carRenId, @Valid CarRentalForm form);
 

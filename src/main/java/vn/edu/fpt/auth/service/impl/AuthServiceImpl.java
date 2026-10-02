@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +31,21 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(readOnly = true)
     public Optional<Account> findAccountById(Integer accountId) {
         return accountRepository.findById(accountId);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @Transactional(readOnly = true)
+    public Account getCurrentCustomerAccount() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Bạn không có quyền thuê xe.");
+        }
+        List<Account> accounts = accountRepository.findByAccountName(authentication.getName());
+        if (accounts.size() != 1 || !"Customer".equals(accounts.get(0).getRole())) {
+            throw new AccessDeniedException("Bạn không có quyền thuê xe.");
+        }
+        return accounts.get(0);
     }
 
     @Override

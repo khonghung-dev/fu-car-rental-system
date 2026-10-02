@@ -46,6 +46,18 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @Transactional(readOnly = true)
+    public Optional<Customer> findCurrentCustomer() {
+        Account account = authService.getCurrentCustomerAccount();
+        List<Customer> customers = customerRepository.findByAccountAccountId(account.getAccountId());
+        if (customers.size() > 1) {
+            throw new IllegalStateException("Không thể xác định hồ sơ khách hàng của tài khoản này.");
+        }
+        return customers.stream().findFirst();
+    }
+
+    @Override
     @Transactional
     public void createCustomer(CustomerForm form) {
         Customer customer = new Customer();

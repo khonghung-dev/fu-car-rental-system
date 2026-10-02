@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thuê xe trực tuyến - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Thuê xe trực tuyến</h1>
+    <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+    <form th:if="${customerProfileAvailable}" th:action="@{/customer/rent}"
+          th:object="${onlineCarRentingForm}" method="post">
+        <ul th:if="${#fields.hasAnyErrors()}" role="alert">
+            <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
+        </ul>
+        <p>Chọn một hoặc nhiều xe ở trạng thái Available.</p>
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Chọn</th>
+                <th scope="col">Mã xe</th>
+                <th scope="col">Tên xe</th>
+                <th scope="col">Năm sản xuất</th>
+                <th scope="col">Màu</th>
+                <th scope="col">Sức chứa</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Nhà sản xuất</th>
+                <th scope="col">Giá thuê/ngày</th>
+                <th scope="col">Trạng thái</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(cars)}">
+                <td colspan="10">Chưa có xe ở trạng thái Available để thuê.</td>
+            </tr>
+            <tr th:each="car : ${cars}">
+                <td>
+                    <input type="checkbox" th:field="*{selectedCarIds}" th:value="${car.carId}"
+                           th:aria-label="${'Chọn xe ' + car.carName}">
+                </td>
+                <td th:text="${car.carId}"></td>
+                <td th:text="${car.carName}"></td>
+                <td th:text="${car.carModelYear}"></td>
+                <td th:text="${car.color}"></td>
+                <td th:text="${car.capacity}"></td>
+                <td th:text="${car.description}"></td>
+                <td th:text="${car.producerName}"></td>
+                <td th:text="${car.rentPrice}"></td>
+                <td th:text="${car.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <p>
+            <label for="pickupDate">Ngày nhận xe</label>
+            <input type="date" id="pickupDate" th:field="*{pickupDate}" required>
+        </p>
+        <p>
+            <label for="returnDate">Ngày trả xe</label>
+            <input type="date" id="returnDate" th:field="*{returnDate}" required>
+        </p>
+        <button type="submit" th:disabled="${#lists.isEmpty(cars)}">Thuê xe</button>
+    </form>
+    <p><a th:href="@{/customer/home}">Trang Customer</a></p>
+</main>
+</body>
+</html>

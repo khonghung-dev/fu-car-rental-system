@@ -46,6 +46,25 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @Transactional(readOnly = true)
+    public List<CarView> getAvailableCars() {
+        return carRepository.findByStatus("Available").stream()
+                .filter(car -> "Available".equals(car.getStatus()))
+                .map(this::toView)
+                .toList();
+    }
+
+    @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @Transactional(readOnly = true)
+    public List<Car> findAvailableCarsByIds(List<Integer> carIds) {
+        return carRepository.findByCarIdInAndStatus(carIds, "Available").stream()
+                .filter(car -> "Available".equals(car.getStatus()))
+                .toList();
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<CarProducer> getProducers() {
         return carProducerRepository.findAll();

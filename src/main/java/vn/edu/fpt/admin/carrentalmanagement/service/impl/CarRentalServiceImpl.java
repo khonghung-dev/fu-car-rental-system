@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +69,24 @@ public class CarRentalServiceImpl implements CarRentalService {
         CarRental rental = new CarRental();
         applyForm(rental, form);
         carRentalRepository.saveAndFlush(rental);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @Transactional
+    public void createOnlineRentals(List<CarRental> rentals) {
+        Customer customer = customerService.findCurrentCustomer()
+                .orElseThrow(() -> new IllegalStateException("Tài khoản chưa có hồ sơ khách hàng để thuê xe."));
+        if (rentals == null || rentals.isEmpty()) {
+            throw new IllegalArgumentException("Vui lòng chọn ít nhất một xe.");
+        }
+        for (CarRental rental : rentals) {
+            if (rental == null || rental.getCarRenId() != null || rental.getCustomer() == null
+                    || !customer.getCustomerId().equals(rental.getCustomer().getCustomerId())) {
+                throw new AccessDeniedException("Bạn không có quyền tạo giao dịch thuê xe này.");
+            }
+        }
+        carRentalRepository.saveAllAndFlush(rentals);
     }
 
     @Override
