@@ -8,6 +8,7 @@
 <body>
 <main>
     <h1>Trang Admin</h1>
+    <p><a th:href="@{/admin/customers}">Quản lý khách hàng</a></p>
     <p>Xin chào, <span th:text="${accountName}"></span>.</p>
     <form th:action="@{/logout}" method="post">
         <button type="submit">Đăng xuất</button>

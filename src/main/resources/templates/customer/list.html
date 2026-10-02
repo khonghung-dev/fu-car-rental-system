@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý khách hàng - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Quản lý khách hàng</h1>
+    <p><a th:href="@{/admin/home}">Trang Admin</a></p>
+    <p><a th:href="@{/admin/customers/create}">Tạo khách hàng</a></p>
+    <p th:if="${successMessage != null}" th:text="${successMessage}" role="status"></p>
+    <p th:if="${errorMessage != null}" th:text="${errorMessage}" role="alert"></p>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Mã khách hàng</th>
+            <th scope="col">Họ tên</th>
+            <th scope="col">Số điện thoại</th>
+            <th scope="col">Ngày sinh</th>
+            <th scope="col">Mã tài khoản</th>
+            <th scope="col">Tên tài khoản</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(customers)}">
+            <td colspan="7">Chưa có khách hàng.</td>
+        </tr>
+        <tr th:each="customer : ${customers}">
+            <td th:text="${customer.customerId}"></td>
+            <td th:text="${customer.fullName}"></td>
+            <td th:text="${customer.mobile}"></td>
+            <td th:text="${customer.birthday}"></td>
+            <td th:text="${customer.accountId}"></td>
+            <td th:text="${customer.accountName}"></td>
+            <td>
+                <a th:href="@{/admin/customers/{id}(id=${customer.customerId})}">Chi tiết</a>
+                <a th:href="@{/admin/customers/{id}/edit(id=${customer.customerId})}">Chỉnh sửa</a>
+                <form th:action="@{/admin/customers/{id}/delete(id=${customer.customerId})}" method="post">
+                    <button type="submit">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

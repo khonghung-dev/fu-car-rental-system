@@ -1,12 +1,15 @@
 package vn.edu.fpt.auth.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.fpt.auth.entity.Account;
 import vn.edu.fpt.auth.repository.AccountRepository;
 import vn.edu.fpt.auth.service.AuthService;
@@ -19,6 +22,13 @@ public class AuthServiceImpl implements AuthService {
             "\\A\\$2[aby]\\$(0[4-9]|[12][0-9]|3[01])\\$[./A-Za-z0-9]{53}\\z");
 
     private final AccountRepository accountRepository;
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional(readOnly = true)
+    public Optional<Account> findAccountById(Integer accountId) {
+        return accountRepository.findById(accountId);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String accountName) throws UsernameNotFoundException {
