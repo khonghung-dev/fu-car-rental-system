@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý xe - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Quản lý xe</h1>
+    <p><a th:href="@{/admin/home}">Trang Admin</a></p>
+    <p><a th:href="@{/admin/cars/create}">Tạo xe</a></p>
+    <p th:if="${successMessage != null}" th:text="${successMessage}" role="status"></p>
+    <p th:if="${errorMessage != null}" th:text="${errorMessage}" role="alert"></p>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Mã xe</th>
+            <th scope="col">Tên xe</th>
+            <th scope="col">Năm sản xuất</th>
+            <th scope="col">Màu xe</th>
+            <th scope="col">Sức chứa</th>
+            <th scope="col">Ngày nhập</th>
+            <th scope="col">Nhà sản xuất</th>
+            <th scope="col">Giá thuê</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(cars)}">
+            <td colspan="10">Chưa có xe.</td>
+        </tr>
+        <tr th:each="car : ${cars}">
+            <td th:text="${car.carId}"></td>
+            <td th:text="${car.carName}"></td>
+            <td th:text="${car.carModelYear}"></td>
+            <td th:text="${car.color}"></td>
+            <td th:text="${car.capacity}"></td>
+            <td th:text="${car.importDate}"></td>
+            <td th:text="${car.producerName}"></td>
+            <td th:text="${car.rentPrice}"></td>
+            <td th:text="${car.status}"></td>
+            <td>
+                <a th:href="@{/admin/cars/{id}(id=${car.carId})}">Chi tiết</a>
+                <a th:href="@{/admin/cars/{id}/edit(id=${car.carId})}">Chỉnh sửa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

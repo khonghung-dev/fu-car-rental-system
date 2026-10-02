@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${carId == null ? 'Tạo xe - FU Car Renting' : 'Chỉnh sửa xe - FU Car Renting'}"></title>
+</head>
+<body>
+<main>
+    <h1 th:text="${carId == null ? 'Tạo xe' : 'Chỉnh sửa xe'}"></h1>
+    <p th:if="${carId != null}">Mã xe: <span th:text="${carId}"></span></p>
+    <p th:if="${#lists.isEmpty(producers)}" role="alert">Chưa có nhà sản xuất để chọn.</p>
+    <form th:action="${carId == null} ? @{/admin/cars} : @{/admin/cars/{id}/edit(id=${carId})}"
+          th:object="${carForm}" method="post">
+        <p th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}" role="alert"></p>
+        <p>
+            <label for="carName">Tên xe</label>
+            <input type="text" id="carName" th:field="*{carName}" required maxlength="200">
+            <span th:if="${#fields.hasErrors('carName')}" th:errors="*{carName}" role="alert"></span>
+        </p>
+        <p>
+            <label for="carModelYear">Năm sản xuất</label>
+            <input type="number" id="carModelYear" th:field="*{carModelYear}" required step="1">
+            <span th:if="${#fields.hasErrors('carModelYear')}" th:errors="*{carModelYear}" role="alert"></span>
+        </p>
+        <p>
+            <label for="color">Màu xe</label>
+            <input type="text" id="color" th:field="*{color}" required maxlength="50">
+            <span th:if="${#fields.hasErrors('color')}" th:errors="*{color}" role="alert"></span>
+        </p>
+        <p>
+            <label for="capacity">Sức chứa</label>
+            <input type="number" id="capacity" th:field="*{capacity}" required step="1">
+            <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}" role="alert"></span>
+        </p>
+        <p>
+            <label for="description">Mô tả</label>
+            <textarea id="description" th:field="*{description}" required maxlength="1000"></textarea>
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" role="alert"></span>
+        </p>
+        <p>
+            <label for="importDate">Ngày nhập</label>
+            <input type="date" id="importDate" th:field="*{importDate}" required>
+            <span th:if="${#fields.hasErrors('importDate')}" th:errors="*{importDate}" role="alert"></span>
+            <span th:if="${#fields.hasErrors('importDateInSqlRange')}" th:errors="*{importDateInSqlRange}" role="alert"></span>
+        </p>
+        <p>
+            <label for="producerId">Nhà sản xuất</label>
+            <select id="producerId" th:field="*{producerId}" required>
+                <option value="">Chọn nhà sản xuất</option>
+                <option th:each="producer : ${producers}" th:value="${producer.producerId}"
+                        th:text="${producer.producerName}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('producerId')}" th:errors="*{producerId}" role="alert"></span>
+        </p>
+        <p>
+            <label for="rentPrice">Giá thuê</label>
+            <input type="number" id="rentPrice" th:field="*{rentPrice}" required step="1">
+            <span th:if="${#fields.hasErrors('rentPrice')}" th:errors="*{rentPrice}" role="alert"></span>
+        </p>
+        <p>
+            <label for="status">Trạng thái</label>
+            <input type="text" id="status" th:field="*{status}" required maxlength="10">
+            <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" role="alert"></span>
+        </p>
+        <button type="submit">Lưu xe</button>
+    </form>
+    <p><a th:href="@{/admin/cars}">Danh sách xe</a></p>
+</main>
+</body>
+</html>
