@@ -10,6 +10,7 @@
     <h1>Đăng nhập</h1>
     <p th:if="${param.error != null}" role="alert">Tên tài khoản hoặc mật khẩu không hợp lệ.</p>
     <p th:if="${param.logout != null}" role="status">Bạn đã đăng xuất.</p>
+    <p th:if="${param.registered != null}" role="status">Đăng ký thành công. Vui lòng đăng nhập.</p>
     <form th:action="@{/login}" method="post">
         <p>
             <label for="accountName">Tên tài khoản</label>
@@ -22,6 +23,7 @@
         </p>
         <button type="submit">Đăng nhập</button>
     </form>
+    <p><a th:href="@{/register}">Đăng ký tài khoản</a></p>
 </main>
 </body>
 </html>
