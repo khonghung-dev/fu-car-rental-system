@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng nhập - FU Car Renting</title>
+</head>
+<body>
+<main>
+    <h1>Đăng nhập</h1>
+    <p th:if="${param.error != null}" role="alert">Tên tài khoản hoặc mật khẩu không hợp lệ.</p>
+    <p th:if="${param.logout != null}" role="status">Bạn đã đăng xuất.</p>
+    <form th:action="@{/login}" method="post">
+        <p>
+            <label for="accountName">Tên tài khoản</label>
+            <input type="text" id="accountName" name="accountName" th:value="${accountName}"
+                   required maxlength="100" autocomplete="username">
+        </p>
+        <p>
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
+        </p>
+        <button type="submit">Đăng nhập</button>
+    </form>
+</main>
+</body>
+</html>
